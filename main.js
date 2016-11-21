@@ -1,12 +1,13 @@
 var canvas = document.getElementById('myCanvas');
 var view = paper.setup(canvas);
 
-/////////////////////////////////////////
-//////// FOR DRAWING THE CORNER /////////
-/////////////////////////////////////////
+
 
 function drawSpace(){
 	function leftLight(){
+/////////////////////////////////////////
+//////// FOR DRAWING THE CORNER /////////
+/////////////////////////////////////////
 		var canvasWidth = $(window).width();
 		var canvasHeight = $(window).height();
 		var oneFifthofHeight = canvasHeight/5;
@@ -74,11 +75,8 @@ function drawSpace(){
 			windowPath.add(points[3]);
 			windowPath.scale(0.4)
 			var distance = Math.floor(Math.random() * ((distance/1.5) - (distance/3) + 1)) + (distance/3);
-
 			var height = Math.floor(Math.random() * ((height - 30) - (height/3) + 1)) + (height/3);
-
 			var height2 = Math.floor(Math.random() * ((height/3) - (-100) + 1)) + (-100);
-			
 			windowPath.position = new paper.Point(((width/2) + distance), height);
 			var windowTop = windowPath.clone()
 			windowTop.position = new paper.Point(((width/2) + distance), height2);
@@ -96,50 +94,35 @@ function drawSpace(){
 			windowPath.join(windowTop)
 			windowPath.join(windowRight)
 			windowPath.fillColor = 'white'
-
 			var middlePathVertical = new paper.Path()
 			middlePathVertical.strokeColor = 'black'
 			middlePathVertical.strokeWidth = 2
 			middlePathVertical.add(windowTop.getLocationAt(windowTop.length/2))
 			middlePathVertical.add(windowBottom.getLocationAt(windowTop.length/2))
-
 			var middlePathHorizontal = new paper.Path()
 			middlePathHorizontal.strokeColor = 'black'
 			middlePathHorizontal.strokeWidth = 2
 			middlePathHorizontal.add(windowLeft.getLocationAt(windowLeft.length/2))
 			middlePathHorizontal.add(windowRight.getLocationAt(windowRight.length/2))
 
-
 			/* window shadow */
 			var floorPath = new paper.Path()
 	        floorPath.add(points[1]);
 			floorPath.add(points[3]);
-
 			var floorPathRight = new paper.Path()
 	        floorPathRight.add(points[1]);
 			floorPathRight.add(points[2]);
-
 			var floorPathRightClone1 = floorPathRight.clone()
 			var floorPathRightClone2 = floorPathRight.clone()
-
 			var firstShadow = new paper.Path()
-
-			 
 			firstShadow.add(windowBottom.segments[0].point)
 			firstShadow.add(windowBottom.segments[0].point.x, $(window).height())
-
-
-
 			var firstShadowRight = new paper.Path()
-
 			firstShadowRight.add(windowTop.segments[1].point)
 			firstShadowRight.add(-1 * windowBottom.segments[1].point.x, $(window).height() * 2)
-
-
-			firstShadowRight.add(new paper.Point(floorPathRight.segments[1].point.x - (windowBottom.length*5), floorPathRight.segments[1].point.y + (windowBottom.length*5)))
+			firstShadowRight.add(new paper.Point(floorPathRight.segments[1].point.x - (windowBottom.length*2), floorPathRight.segments[1].point.y + (windowBottom.length*5)))
 			firstShadow.join(windowBottom)
 			windowBottom.join(windowLeft)
-			
 			firstShadow.join(firstShadowRight)
 			firstShadow.fillColor = 'white'
 			firstShadow.opacity = 0.7
@@ -149,16 +132,12 @@ function drawSpace(){
 		/* Left */
 		function drawWindowLeft(points, height, distance){
 	        var windowPath = new paper.Path()
-	       // windowPath.strokeColor = 'white';
 	        windowPath.add(points[1]);
 			windowPath.add(points[2]);
 			windowPath.scale(0.5)
 			var distance = Math.floor(Math.random() * ((distance/1.5) - (distance/3) + 1)) + (distance/3);
-
 			var height = Math.floor(Math.random() * ((height - 30) - (height/3) + 1)) + (height/3);
-
 			var height2 = Math.floor(Math.random() * ((height/3) - (-100) + 1)) + (-100);
-			
 			windowPath.position = new paper.Point(distance, height);
 			var windowTop = windowPath.clone()
 			windowTop.position = new paper.Point(distance, height2);
@@ -209,19 +188,15 @@ function drawSpace(){
 			firstShadow.add(windowBottom.segments[0].point.x, $(window).height())
 			var intersections = firstShadow.getIntersections(floorPath)
 			firstShadow.removeSegments(1, 2);
-			console.log(intersections[0])
-			//firstShadow.add(new paper.Point(intersections[0].point.x + 300, intersections[0].point.y))
 			firstShadow.add(new paper.Point(floorPathRight.segments[1].point.x * 2, floorPathRight.segments[1].point.y))
 
 
 			var firstShadowRight = new paper.Path()
-			// firstShadow.add(windowBottom.segments[1].point)
 			firstShadowRight.add(windowBottom.segments[1].point)
 			firstShadowRight.add(windowBottom.segments[1].point.x, $(window).height() * 2)
 			var intersections2 = firstShadowRight.getIntersections(floorPath)
 			firstShadowRight.removeSegments(1, 2);
-			console.log(intersections2[0])
-			// firstShadowRight.add(new paper.Point(intersections2[0].point.x + 250, intersections2[0].point.y))
+
 			firstShadowRight.add(new paper.Point(floorPathRight.segments[1].point.x - (windowBottom.length*2), floorPathRight.segments[1].point.y + (windowBottom.length*5)))
 			windowBottom.join(windowRight)
 			firstShadow.join(windowBottom)
@@ -229,7 +204,7 @@ function drawSpace(){
 			firstShadow.fillColor = 'white'
 			firstShadow.opacity = 0.7
 			firstShadow.blendMode = 'soft-light'
-			// firstShadow.add(floorPath.getLocationAt(windowBottom.segments[1].point.x + 100))
+
 		}
 		
 		drawCorner(points)
@@ -239,37 +214,22 @@ function drawSpace(){
 			drawWindowRight(points, height, distance, rightWall, leftWall)
 		}
 		
-		
+		var svg = paper.project.importSVG('https://dl.dropboxusercontent.com/u/89221222/plant.svg',function(){
+			var plant = paper.project.activeLayer.children[paper.project.activeLayer.children.length - 1]
+			plant.scale(0.5)
+			console.log(plant.className)
+			plant.position = new paper.Point(500,500)
+
+		})
 	}
 
 	leftLight()
+
 }
 
+// setInterval(drawSpace, 1000)
+drawSpace()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- drawSpace()
 paper.view.draw()
